@@ -11,6 +11,7 @@
             this.r = 50;
             this.bgcolor = "black"
             this.color = "white"
+            this.stop_counter = 100;
         }
 
         moveH(t) {
@@ -19,7 +20,11 @@
             this.ctx.fillRect(0, 0, this.width, this.height);
         
             this.ctx.beginPath();
-            this.ctx.arc((this.width / 2) + Math.sin(t/100) * (this.width / 2 - this.r), (this.height / 2), this.r, 0, 2 * Math.PI);
+            this.ctx.arc(
+                (this.width / 2) + Math.sin((t / 360) * 2 * Math.PI) * (this.width / 2 - this.r), 
+                (this.height / 2), 
+                this.r, 0, 2 * Math.PI
+            );
             this.ctx.fillStyle = this.color
             this.ctx.fill();    
         }
@@ -30,7 +35,11 @@
             this.ctx.fillRect(0, 0, this.width, this.height);
         
             this.ctx.beginPath();
-            this.ctx.arc((this.width / 2), (this.height / 2) + Math.sin(t/100) * (this.height / 2 - this.r), this.r, 0, 2 * Math.PI);
+            this.ctx.arc(
+                (this.width / 2),
+                (this.height / 2) + Math.sin((t / 360) * 2 * Math.PI) * (this.height / 2 - this.r), 
+                this.r, 0, 2 * Math.PI
+            );
             this.ctx.fillStyle = this.color
             this.ctx.fill();    
         }
@@ -45,7 +54,7 @@
         }
 
         draw() {
-            this.drawer.moveV(this.t);
+            this.drawer.moveH(this.t);
         }
 
         update() {
@@ -53,12 +62,16 @@
         }
 
         run() {
+            let f = 10;
             this.update();
             this.draw();
 
+            if( ( Math.sin((this.t / 360) * 2 * Math.PI) === 1 ) || ( Math.sin((this.t / 360) * 2 * Math.PI) === -1 ) ) {
+                f = 5000;
+            }
             setTimeout(() => {
                 this.run();
-            }, 10);
+            }, f);
         }
     }
 
